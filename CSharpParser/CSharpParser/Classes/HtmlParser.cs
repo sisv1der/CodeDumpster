@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
@@ -13,20 +14,34 @@ namespace CSharpParser.Classes
     internal class HtmlParser
     {
         private static readonly HttpClient _httpClient = new();
-        
+
+        private static string GetHtmlNode(HtmlNode row, string XPath)
+        {
+            var node = row.SelectSingleNode($"{XPath}");
+            return WebUtility.HtmlDecode(node.InnerText).Trim();
+        }
+
+        private static HtmlNodeCollection GetRows(HtmlDocument htmlDocument,string XPath)
+        {
+            var rows = htmlDocument.DocumentNode.SelectNodes(@"Xpath");
+            return rows;
+        }
+        private static async Task<HtmlDocument> GetHtmlPage(string pageUrl)
+        {
+            var html = await _httpClient.GetStringAsync(pageUrl);
+            var htmlDoc = new HtmlDocument();
+            return htmlDoc;
+        } 
         public async Task<List<ProductInfo>> ParserNKatalog(string pageUrl)
         {
             // загрузка html page
-            var html = await _httpClient.GetStringAsync(pageUrl);
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(html);
-            
+            var htmlDocument = await GetHtmlPage(pageUrl);
+
             // воруем строчки <tr> с нужным рейтингом-атрибутом rp
-            var rowsWithRp = htmlDoc.DocumentNode.SelectNodes(@"//tr[@rp]");
+            var rowsWithRp = GetRows(htmlDocument, "//tr[@rp]");
             if (rowsWithRp == null)
             {
-                return new List<ProductInfo>(); // пустой список если таких строчек нет, можно и нулл, в целом
-                // return null
+                return new List<ProductInfo>();
             }
             
             // листик товаров
@@ -38,27 +53,15 @@ namespace CSharpParser.Classes
                 {
                     // наш продуктик
                     var productInfo = new ProductInfo();
-
                     // хватаем нодик с именем
-                    var nameNode = row.SelectSingleNode(".//noindex/p[@class='where-buy-title']");
-                    if (nameNode != null) // тест на аутизм 
-                    {
-                        productInfo.ProductName = WebUtility.HtmlDecode(nameNode.InnerText).Trim();
-                    }
+                    productInfo.ProductName = GetHtmlNode(row, ".//noindex/p[@class='where-buy-title']");
+                    // хватаем нодик с именем
 
                     // хватаем нодик с урл на селлера
-                    var sellerNode = row.SelectSingleNode(".//div[@id='where-buy-title-name']/text()");
-                    if (sellerNode != null)
-                    {
-                        productInfo.SellerUrl = WebUtility.HtmlDecode(sellerNode.InnerText).Trim();
-                    }
+                    productInfo.SellerUrl = GetHtmlNode(row, ".//div[@id='where-buy-title-name']/text()");
 
                     // хватаем нодик с ценой в рублс
-                    var priceNode = row.SelectSingleNode(".//td[@class='where-buy-price']/a[@class='where-buy-price__link']");
-                    if (priceNode != null)
-                    {
-                        productInfo.Price = WebUtility.HtmlDecode(priceNode.InnerText).Trim();
-                    }
+                    productInfo.Price = GetHtmlNode(row, ".//td[@class='where-buy-price']/a[@class='where-buy-price__link']");
 
                     // если хотяб один стринг ссылается на нулл/равен empty,
                     // то добавляем прикол в список для возврата
