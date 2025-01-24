@@ -17,19 +17,20 @@ namespace CSharpParser.Classes
 
         private static string GetHtmlNode(HtmlNode row, string XPath)
         {
-            var node = row.SelectSingleNode($"{XPath}");
+            var node = row.SelectSingleNode(XPath);
             return WebUtility.HtmlDecode(node.InnerText).Trim();
         }
 
         private static HtmlNodeCollection GetRows(HtmlDocument htmlDocument,string XPath)
         {
-            var rows = htmlDocument.DocumentNode.SelectNodes(@"Xpath");
+            var rows = htmlDocument.DocumentNode.SelectNodes(XPath);
             return rows;
         }
         private static async Task<HtmlDocument> GetHtmlPage(string pageUrl)
         {
             var html = await _httpClient.GetStringAsync(pageUrl);
             var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(html);
             return htmlDoc;
         } 
         public async Task<List<ProductInfo>> ParserNKatalog(string pageUrl)
