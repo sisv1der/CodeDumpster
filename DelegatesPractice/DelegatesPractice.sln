@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDelegates_Multicast", "DelegatesPractice\SimpleDelegates_Multicast.csproj", "{5A1AEDE7-2FC5-40D5-B83D-52E96CEE10DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MethodParameter", "MethodParameter\MethodParameter.csproj", "{2EF37831-0649-4066-8D86-2A4BB10AB98D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A1AEDE7-2FC5-40D5-B83D-52E96CEE10DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A1AEDE7-2FC5-40D5-B83D-52E96CEE10DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A1AEDE7-2FC5-40D5-B83D-52E96CEE10DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A1AEDE7-2FC5-40D5-B83D-52E96CEE10DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EF37831-0649-4066-8D86-2A4BB10AB98D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EF37831-0649-4066-8D86-2A4BB10AB98D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EF37831-0649-4066-8D86-2A4BB10AB98D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EF37831-0649-4066-8D86-2A4BB10AB98D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
